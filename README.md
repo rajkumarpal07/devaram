@@ -1,5 +1,6 @@
-# devaram
-Devaram-API
+# Devaram-API
+
+Go app that serves RESTful JSON web API for the Devaram.
 
 Devaram means garland of poems to Lord Shiva.
 
@@ -8,4 +9,3 @@ Devaram denotes the first 7 volumes of the Tirumurai, the twelve-volume collecti
 தேவாரம் எனப்படுபவை சைவ சமயத்தின் முழுமுதற் கடவுளான சிவபெருமான் மீது, திருஞானசம்பந்தமூர்த்தி நாயனார்,திருநாவுக்கரசு நாயனார், சுந்தரமூர்த்தி நாயனார் ஆகிய மூன்று இறையடியார்களால் தமிழிற் பாடப்பட்ட பாடல்கள் ஆகும். 
 
 
-Go app that serves RESTful JSON web API for the Devaram.
