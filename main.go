@@ -55,7 +55,7 @@ func VerseHandler(w http.ResponseWriter, r *http.Request) {
 
 	js, _ := json.Marshal(data)
 	w.Write(js)
-	closedb(db)
+	defer closedb(db)
 }
 
 //VersesHandler ....
@@ -75,7 +75,7 @@ func VersesHandler(w http.ResponseWriter, r *http.Request) {
 
 	js, _ := json.Marshal(data)
 	w.Write(js)
-	closedb(db)
+	defer closedb(db)
 }
 
 func main() {
