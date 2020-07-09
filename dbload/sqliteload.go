@@ -10,7 +10,7 @@ import (
 
 //VerseNodes ....
 type VerseNodes struct {
-	VerseNodes []Verse `json:"verses"`
+	Verses []Verse `json:"verses"`
 }
 
 // Verse ....
@@ -39,7 +39,8 @@ func closedb(db *sql.DB) {
 	}
 }
 
-func createVerse(db *sql.DB, bookID int, pathigamID int, verseID int, templeName string, pann string, verse string, explanation string) {
+//CreateVerse ... Inserts a Verse in to the DB
+func CreateVerse(db *sql.DB, bookID int, pathigamID int, verseID int, templeName string, pann string, verse string, explanation string) {
 
 	statement, _ := db.Prepare("INSERT INTO verses (book_id, pathigam_id, verse_id, temple_name, pann, verse, explanation) VALUES (?, ?, ?, ?, ?, ?, ?)")
 	statement.Exec(bookID, pathigamID, verseID, templeName, pann, verse, explanation)
@@ -47,44 +48,50 @@ func createVerse(db *sql.DB, bookID int, pathigamID int, verseID int, templeName
 
 }
 
-//ReadVerse ....
+//ReadVerse ....Retrieves only one verse from the DB and wraps in the struct Verse.
 func ReadVerse(db *sql.DB, bookID int, pathigamID int, verseID int) Verse {
 
 	rows, _ := db.Query("SELECT book_id, pathigam_id, verse_id, temple_name, pann, verse, explanation FROM verses where book_id=? and pathigam_id=? and verse_id=?", bookID, pathigamID, verseID)
 	var oneverse Verse
 	for rows.Next() {
 		rows.Scan(&oneverse.BookID, &oneverse.PathigamID, &oneverse.VerseID, &oneverse.TempleName, &oneverse.Pann, &oneverse.Verse, &oneverse.Explanation)
-		//fmt.Printf("bookID:%d, pathigamID:%d, verseID:%d, %v, %v, %v, %v\n", oneverse.BookID, oneverse.PathigamID, oneverse.VerseID, oneverse.TempleName, oneverse.Pann, oneverse.Verse, oneverse.Explanation)
 	}
 
 	return oneverse
 }
 
-func readVerses(db *sql.DB, bookID int, pathigamID int, verseID int) {
+//ReadVerses .... Retrieves one or more verses from the DB and wraps in the struct VerseNodes.
+func ReadVerses(db *sql.DB, bookID int, pathigamID int, verseID int, everseID int) VerseNodes {
 
-	rows, _ := db.Query("SELECT book_id, pathigam_id, verse_id, temple_name, pann, verse, explanation FROM verses")
+	rows, _ := db.Query("SELECT book_id, pathigam_id, verse_id, temple_name, pann, verse, explanation FROM verses where verse_id between ? and ?", verseID, everseID)
+	var varray VerseNodes
 	var tempverse Verse
+
 	for rows.Next() {
 		rows.Scan(&tempverse.BookID, &tempverse.PathigamID, &tempverse.VerseID, &tempverse.TempleName, &tempverse.Pann, &tempverse.Verse, &tempverse.Explanation)
-		fmt.Printf("bookID:%d, pathigamID:%d, verseID:%d, %v, %v, %v, %v\n", tempverse.BookID, tempverse.PathigamID, tempverse.VerseID, tempverse.TempleName, tempverse.Pann, tempverse.Verse, tempverse.Explanation)
+
+		varray.Verses = append(varray.Verses, tempverse)
 	}
+	return varray
 }
 
-func updateVerse(db *sql.DB, bookID int, pathigamID int, verseID int, templeName string, pann string, verse string, explanation string) {
+//UpdateVerse ... Update one Verse in the DB
+func UpdateVerse(db *sql.DB, bookID int, pathigamID int, verseID int, templeName string, pann string, verse string, explanation string) {
 	statement1, _ := db.Prepare("update verses set verse=?, explanation=?, temple_name=?, pann=? where book_id=? and pathigam_id=? and verse_id=?")
 	statement1.Exec(verse, explanation, templeName, pann, bookID, pathigamID, verseID)
 	fmt.Println("Successfully updated the verse and explanation in devaramDB!")
 
 }
 
-func deleteVerse(db *sql.DB, bookID int, pathigamID int, verseID int) {
+//DeleteVerse ... delete a Verse in the DB
+func DeleteVerse(db *sql.DB, bookID int, pathigamID int, verseID int) {
 
 	statement, _ := db.Prepare("delete from verses where book_id=? and pathigam_id=? and verse_id=?")
 	statement.Exec(bookID, pathigamID, verseID)
 	fmt.Println("Successfully deleted the verse in database!")
 }
 
-//LoadIt ....
+//LoadIt .... Loads the JSON FILE DATA in to the SQLITE DB named devaram.db
 func LoadIt() {
 	db := connect()
 
@@ -93,10 +100,10 @@ func LoadIt() {
 
 	_ = json.Unmarshal([]byte(file), &data)
 
-	for i := 0; i < len(data.VerseNodes); i++ {
-		createVerse(db, data.VerseNodes[i].BookID, data.VerseNodes[i].PathigamID,
-			data.VerseNodes[i].VerseID, data.VerseNodes[i].TempleName,
-			data.VerseNodes[i].Pann, data.VerseNodes[i].Verse, data.VerseNodes[i].Explanation)
+	for i := 0; i < len(data.Verses); i++ {
+		CreateVerse(db, data.Verses[i].BookID, data.Verses[i].PathigamID,
+			data.Verses[i].VerseID, data.Verses[i].TempleName,
+			data.Verses[i].Pann, data.Verses[i].Verse, data.Verses[i].Explanation)
 	}
 
 	defer closedb(db)
