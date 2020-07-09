@@ -23,7 +23,6 @@ Devaram denotes the first 7 volumes of the Tirumurai, the twelve-volume collecti
 | 10  | பத்தாம் திருமுறை  | 1237  | 3000  | -  |
 | 11  | பதினொன்றாம் திருமுறை  | 40  | 1385  | -  |
 | 12  | பன்னிரண்டாம் திருமுறை  | 71  | 4272  | -  |
-| | | | | |
 |Total|| 2239|18,266|552|
 
 
