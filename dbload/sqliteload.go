@@ -47,7 +47,20 @@ func createVerse(db *sql.DB, bookID int, pathigamID int, verseID int, templeName
 
 }
 
-func readVerse(db *sql.DB, bookID int, pathigamID int, verseID int) {
+//ReadVerse ....
+func ReadVerse(db *sql.DB, bookID int, pathigamID int, verseID int) Verse {
+
+	rows, _ := db.Query("SELECT book_id, pathigam_id, verse_id, temple_name, pann, verse, explanation FROM verses where book_id=? and pathigam_id=? and verse_id=?", bookID, pathigamID, verseID)
+	var oneverse Verse
+	for rows.Next() {
+		rows.Scan(&oneverse.BookID, &oneverse.PathigamID, &oneverse.VerseID, &oneverse.TempleName, &oneverse.Pann, &oneverse.Verse, &oneverse.Explanation)
+		//fmt.Printf("bookID:%d, pathigamID:%d, verseID:%d, %v, %v, %v, %v\n", oneverse.BookID, oneverse.PathigamID, oneverse.VerseID, oneverse.TempleName, oneverse.Pann, oneverse.Verse, oneverse.Explanation)
+	}
+
+	return oneverse
+}
+
+func readVerses(db *sql.DB, bookID int, pathigamID int, verseID int) {
 
 	rows, _ := db.Query("SELECT book_id, pathigam_id, verse_id, temple_name, pann, verse, explanation FROM verses")
 	var tempverse Verse
@@ -85,7 +98,6 @@ func LoadIt() {
 			data.VerseNodes[i].VerseID, data.VerseNodes[i].TempleName,
 			data.VerseNodes[i].Pann, data.VerseNodes[i].Verse, data.VerseNodes[i].Explanation)
 	}
-	fmt.Println("Completed LoadIt func....!")
 
 	defer closedb(db)
 }
