@@ -10,7 +10,7 @@ Devaram denotes the first 7 volumes of the Tirumurai, the twelve-volume collecti
 
 
 | BookNum  | BookName  | Pathigams  | Verses  | Temples  |
-|---|---|---|---|---|
+|---|---|---:|---:|---:|
 |  1 |  முதல் திருமுறை   |  136 |  1469 | 88  |
 |  2 |  இரண்டாம் திருமுறை   | 122  | 1331  | 90  |
 |  3 | மூன்றாம் திருமுறை  | 126  | 1358  | 85  |
@@ -26,7 +26,7 @@ Devaram denotes the first 7 volumes of the Tirumurai, the twelve-volume collecti
 
  
 
-
+## Install
 
 ```
 export DEVARAM_API_DB="./devaram.db"
