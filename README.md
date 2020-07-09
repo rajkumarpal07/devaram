@@ -16,6 +16,6 @@ go run main.go
 
 
 ## Usage
-https://devaram-api.com/BOOK/CHAPTER/VERSE
+https://localhost:4567/BOOK/CHAPTER/VERSE
 
 You can use the above URL with book/chapter/verse format. It mostly just works. (Though, if it doesn't, you can let us know!)
