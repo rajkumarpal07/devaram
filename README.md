@@ -38,10 +38,13 @@ go run main.go
 
 ## Usage
 To retrieve a single verse:
+
 https://localhost:4567/BOOK/CHAPTER/VERSE
 
 
 To retrieve a range of verses in a chapter:
+
 https://localhost:4567/BOOK/CHAPTER/VERSESTART-VERSEEND
+
 
 You can use the above URLs with book/chapter/verse format. It mostly just works. (Though, if it doesn't, you can let us know!)
