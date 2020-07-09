@@ -39,4 +39,6 @@ go run main.go
 ## Usage
 https://localhost:4567/BOOK/CHAPTER/VERSE
 
+https://localhost:4567/BOOK/CHAPTER/VERSESTART-VERSEEND
+
 You can use the above URL with book/chapter/verse format. It mostly just works. (Though, if it doesn't, you can let us know!)
