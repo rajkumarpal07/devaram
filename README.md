@@ -2,6 +2,7 @@
 
 Go app that serves RESTful JSON web API for the Devaram.
 
+## :books: Overview
 Devaram means garland of poems to Lord Shiva.
 
 Devaram denotes the first 7 volumes of the Tirumurai, the twelve-volume collection of Śaiva devotional poetry. These volumes contain the works of the three most prominent Tamil poets of the 7th and 8th centuries: Sambandar, Appar, and Sundarar.
@@ -27,8 +28,7 @@ Devaram denotes the first 7 volumes of the Tirumurai, the twelve-volume collecti
 
 
 
-
-## Install
+## :wrench: Install
 
 ```
 export DEVARAM_API_DB="./devaram.db"
@@ -36,7 +36,7 @@ go run main.go
 ```
 
 
-## Usage
+## :car: Usage
 To retrieve a single verse:
 
 https://localhost:4567/devaram/BOOK/CHAPTER/VERSE
@@ -51,6 +51,6 @@ You can use the above URLs with book/chapter/verse format. It mostly just works.
 
 
 
-## Copyright
+## :pencil2: Copyright
 
 Copyright Rajkumar Palani. Licensed MIT.
