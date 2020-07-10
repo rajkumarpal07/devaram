@@ -81,9 +81,9 @@ func main() {
 
 	//sl.LoadIt()
 	r := mux.NewRouter()
-	r.HandleFunc("/{bid:[0-9]+}/{pid:[0-9]+}/{vid:[0-9]+}", VerseHandler)
+	r.HandleFunc("/devaram/{bid:[0-9]+}/{pid:[0-9]+}/{vid:[0-9]+}", VerseHandler)
 
-	r.HandleFunc("/{bid:[0-9]+}/{pid:[0-9]+}/{vid:[0-9]+}-{eid:[0-9]+}", VersesHandler)
+	r.HandleFunc("/devaram/{bid:[0-9]+}/{pid:[0-9]+}/{vid:[0-9]+}-{eid:[0-9]+}", VersesHandler)
 
 	srv := &http.Server{
 		Handler: r, Addr: "127.0.0.1:4567", WriteTimeout: 15 * time.Second, ReadTimeout: 15 * time.Second}
