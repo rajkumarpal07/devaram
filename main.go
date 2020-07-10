@@ -8,24 +8,17 @@ import (
 	"strconv"
 	"time"
 
-	dbld "./dbload"
+	"./dao"
+	sl "./dao/sqlite"
+	util "./util"
+
 	"github.com/gorilla/mux"
 	_ "github.com/mattn/go-sqlite3"
 )
 
-// Verse ....
-type Verse struct {
-	BookID      int    `json:"book_id"`
-	PathigamID  int    `json:"pathigam_id"`
-	VerseID     int    `json:"verse_id"`
-	TempleName  string `json:"temple_name"`
-	Pann        string `json:"pann"`
-	Verse       string `json:"verse"`
-	Explanation string `json:"explanation"`
-}
-
 func connect() *sql.DB {
-	db, err := sql.Open("sqlite3", "./devaram.db")
+	config, err := util.GetConfiguration()
+	db, err := sql.Open(config.Engine, config.Database)
 	if err != nil {
 		log.Println(err)
 	}
@@ -48,7 +41,10 @@ func VerseHandler(w http.ResponseWriter, r *http.Request) {
 	pid1, _ := strconv.Atoi(vars["pid"])
 	vid1, _ := strconv.Atoi(vars["vid"])
 
-	data := dbld.ReadVerse(db, bid1, pid1, vid1)
+	var intf dao.VerseDao
+	intf = sl.VerseImplSqlite{}
+
+	data := intf.ReadVerse(bid1, pid1, vid1)
 
 	w.Header().Set("Content-Type", "application/json;charset=utf-8")
 	w.WriteHeader(http.StatusCreated)
@@ -69,17 +65,21 @@ func VersesHandler(w http.ResponseWriter, r *http.Request) {
 	vid1, _ := strconv.Atoi(vars["vid"])
 	eid1, _ := strconv.Atoi(vars["eid"])
 
-	data := dbld.ReadVerses(db, bid1, pid1, vid1, eid1)
+	var intf dao.VerseDao
+	intf = sl.VerseImplSqlite{}
+
+	data1 := intf.ReadVerses(bid1, pid1, vid1, eid1)
 	w.Header().Set("Content-Type", "application/json;charset=utf-8")
 	w.WriteHeader(http.StatusCreated)
 
-	js, _ := json.Marshal(data)
+	js, _ := json.Marshal(data1)
 	w.Write(js)
 	defer closedb(db)
 }
 
 func main() {
 
+	//sl.LoadIt()
 	r := mux.NewRouter()
 	r.HandleFunc("/{bid:[0-9]+}/{pid:[0-9]+}/{vid:[0-9]+}", VerseHandler)
 
@@ -91,4 +91,5 @@ func main() {
 	if err := srv.ListenAndServe(); err != nil {
 		panic(err)
 	}
+
 }

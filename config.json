@@ -1,0 +1,8 @@
+{
+    "engine": "sqlite3",
+    "server": "127.0.0.1",
+    "port": "",
+    "user": "admin",
+    "password": "admin",
+    "database": "./devaram.db"
+  }
