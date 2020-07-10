@@ -9,4 +9,5 @@ type Verse struct {
 	Pann        string `json:"pann"`
 	Verse       string `json:"verse"`
 	Explanation string `json:"explanation"`
+	Translation string `json:"translation"`
 }

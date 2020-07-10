@@ -79,7 +79,7 @@ func VersesHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 
-	//sl.LoadIt()
+	sl.LoadIt()
 	r := mux.NewRouter()
 	r.HandleFunc("/devaram/{bid:[0-9]+}/{pid:[0-9]+}/{vid:[0-9]+}", VerseHandler)
 

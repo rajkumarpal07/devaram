@@ -33,10 +33,10 @@ func closedb(db *sql.DB) {
 }
 
 //CreateVerse ... Inserts a Verse in to the DB
-func (dao VerseImplSqlite) CreateVerse(bookID int, pathigamID int, verseID int, templeName string, pann string, verse string, explanation string) {
+func (dao VerseImplSqlite) CreateVerse(bookID int, pathigamID int, verseID int, templeName string, pann string, verse string, explanation string, translation string) {
 	db := connect()
-	statement, _ := db.Prepare("INSERT INTO verses (book_id, pathigam_id, verse_id, temple_name, pann, verse, explanation) VALUES (?, ?, ?, ?, ?, ?, ?)")
-	statement.Exec(bookID, pathigamID, verseID, templeName, pann, verse, explanation)
+	statement, _ := db.Prepare("INSERT INTO verses (book_id, pathigam_id, verse_id, temple_name, pann, verse, explanation, translation) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
+	statement.Exec(bookID, pathigamID, verseID, templeName, pann, verse, explanation, translation)
 	fmt.Println("Inserted the verse into devaramDB!")
 
 	defer closedb(db)
@@ -46,10 +46,10 @@ func (dao VerseImplSqlite) CreateVerse(bookID int, pathigamID int, verseID int, 
 //ReadVerse ....Retrieves only one verse from the DB and wraps in the struct Verse.
 func (dao VerseImplSqlite) ReadVerse(bookID int, pathigamID int, verseID int) models.Verse {
 	db := connect()
-	rows, _ := db.Query("SELECT book_id, pathigam_id, verse_id, temple_name, pann, verse, explanation FROM verses where book_id=? and pathigam_id=? and verse_id=?", bookID, pathigamID, verseID)
+	rows, _ := db.Query("SELECT book_id, pathigam_id, verse_id, temple_name, pann, verse, explanation, translation FROM verses where book_id=? and pathigam_id=? and verse_id=?", bookID, pathigamID, verseID)
 	var oneverse models.Verse
 	for rows.Next() {
-		rows.Scan(&oneverse.BookID, &oneverse.PathigamID, &oneverse.VerseID, &oneverse.TempleName, &oneverse.Pann, &oneverse.Verse, &oneverse.Explanation)
+		rows.Scan(&oneverse.BookID, &oneverse.PathigamID, &oneverse.VerseID, &oneverse.TempleName, &oneverse.Pann, &oneverse.Verse, &oneverse.Explanation, &oneverse.Translation)
 	}
 	defer closedb(db)
 	return oneverse
@@ -58,12 +58,12 @@ func (dao VerseImplSqlite) ReadVerse(bookID int, pathigamID int, verseID int) mo
 //ReadVerses .... Retrieves one or more verses from the DB and wraps in the struct VerseNodes.
 func (dao VerseImplSqlite) ReadVerses(bookID int, pathigamID int, verseID int, everseID int) models.VerseNodes {
 	db := connect()
-	rows, _ := db.Query("SELECT book_id, pathigam_id, verse_id, temple_name, pann, verse, explanation FROM verses where verse_id between ? and ?", verseID, everseID)
+	rows, _ := db.Query("SELECT book_id, pathigam_id, verse_id, temple_name, pann, verse, explanation, translation FROM verses where verse_id between ? and ?", verseID, everseID)
 	var varray models.VerseNodes
 	var tempverse models.Verse
 
 	for rows.Next() {
-		rows.Scan(&tempverse.BookID, &tempverse.PathigamID, &tempverse.VerseID, &tempverse.TempleName, &tempverse.Pann, &tempverse.Verse, &tempverse.Explanation)
+		rows.Scan(&tempverse.BookID, &tempverse.PathigamID, &tempverse.VerseID, &tempverse.TempleName, &tempverse.Pann, &tempverse.Verse, &tempverse.Explanation, &tempverse.Translation)
 
 		varray.Verses = append(varray.Verses, tempverse)
 	}
@@ -72,16 +72,16 @@ func (dao VerseImplSqlite) ReadVerses(bookID int, pathigamID int, verseID int, e
 }
 
 //UpdateVerse ... Update one Verse in the DB
-func (dao VerseImplSqlite) UpdateVerse(bookID int, pathigamID int, verseID int, templeName string, pann string, verse string, explanation string) {
+func (dao VerseImplSqlite) UpdateVerse(bookID int, pathigamID int, verseID int, templeName string, pann string, verse string, explanation string, translation string) {
 	db := connect()
-	statement1, _ := db.Prepare("update verses set verse=?, explanation=?, temple_name=?, pann=? where book_id=? and pathigam_id=? and verse_id=?")
-	statement1.Exec(verse, explanation, templeName, pann, bookID, pathigamID, verseID)
+	statement1, _ := db.Prepare("update verses set verse=?, explanation=?, translation=? temple_name=?, pann=? where book_id=? and pathigam_id=? and verse_id=?")
+	statement1.Exec(verse, explanation, translation, templeName, pann, bookID, pathigamID, verseID)
 	fmt.Println("Successfully updated the verse and explanation in devaramDB!")
 	defer closedb(db)
 }
 
 //DeleteVerse ... delete a Verse in the DB
-func (dao VerseImplSqlite)  DeleteVerse(bookID int, pathigamID int, verseID int) {
+func (dao VerseImplSqlite) DeleteVerse(bookID int, pathigamID int, verseID int) {
 	db := connect()
 	statement, _ := db.Prepare("delete from verses where book_id=? and pathigam_id=? and verse_id=?")
 	statement.Exec(bookID, pathigamID, verseID)
@@ -104,7 +104,7 @@ func LoadIt() {
 
 		intf.CreateVerse(data.Verses[i].BookID, data.Verses[i].PathigamID,
 			data.Verses[i].VerseID, data.Verses[i].TempleName,
-			data.Verses[i].Pann, data.Verses[i].Verse, data.Verses[i].Explanation)
+			data.Verses[i].Pann, data.Verses[i].Verse, data.Verses[i].Explanation, data.Verses[i].Translation)
 	}
 
 	defer closedb(db)
