@@ -1,3 +1,7 @@
+
+![Devaram logo](https://imgur.com/9weW0e9.png)
+
+
 # Devaram-API
 
 Go app that serves RESTful JSON web API for the Devaram.
