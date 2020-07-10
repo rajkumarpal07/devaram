@@ -1,5 +1,5 @@
 
-![Devaram logo](https://imgur.com/9weW0e9.png)
+![Devaram logo](https://imgur.com/0kfkOSq.png)
 
 
 # Devaram-API
